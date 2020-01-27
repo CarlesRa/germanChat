@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
    private ChatMessageAdapter adapter;
    private String username;
    private final String TAG = MainActivity.class.getSimpleName();
+   private RecyclerView recyclerView;
 
    @Override
    protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
                      @Override
                      public void onSuccess(DocumentReference documentReference) {
                         // Si el mensaje se ha enviado correctamente
+                        recyclerView.smoothScrollToPosition(adapter.getItemCount());
                      }
                   })
                   .addOnFailureListener(new OnFailureListener() {
@@ -87,6 +90,14 @@ public class MainActivity extends AppCompatActivity {
                   });
             // Limpiamos el campo de texto
             etMessage.setText("");
+         }
+      });
+
+      adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+         @Override
+         public void onChanged() {
+            super.onChanged();
+            recyclerView.smoothScrollToPosition(adapter.getItemCount());
          }
       });
    }
@@ -146,10 +157,12 @@ public class MainActivity extends AppCompatActivity {
        */
 
       adapter = new ChatMessageAdapter(options);
-      RecyclerView recyclerView = findViewById(R.id.rvMessages);
-      recyclerView.setLayoutManager(new LinearLayoutManager(this));
+      recyclerView = findViewById(R.id.rvMessages);
+      LinearLayoutManager linearLayout = new LinearLayoutManager(this);
+      linearLayout.setStackFromEnd(true);
+      recyclerView.setLayoutManager(linearLayout);
       recyclerView.setAdapter(adapter);
-
+      recyclerView.smoothScrollToPosition(adapter.getItemCount());
       Log.d(TAG, "Start listeninng");
       adapter.startListening();
    }

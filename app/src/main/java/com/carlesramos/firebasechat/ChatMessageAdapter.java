@@ -12,8 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ChatMessageAdapter extends FirestoreRecyclerAdapter<ChatMessage,ChatMessageAdapter.ChatMessageHolder> {
@@ -41,6 +39,7 @@ public class ChatMessageAdapter extends FirestoreRecyclerAdapter<ChatMessage,Cha
    @Override
    public void onDataChanged() {
       super.onDataChanged();
+
       // Es invocado cada vez que la consulta devuelve un conjunto de datos distinto
    }
 
@@ -62,5 +61,10 @@ public class ChatMessageAdapter extends FirestoreRecyclerAdapter<ChatMessage,Cha
          tvTime = itemView.findViewById(R.id.tvTime);
          tvMessage = itemView.findViewById(R.id.tvMessage);
       }
+   }
+
+   @Override
+   public int getItemCount() {
+      return super.getItemCount();
    }
 }
